@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeVault | Official Channel Site</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #030712;
+            --card-bg: #111827;
+            --text-main: #f9fafb;
+            --text-dim: #9ca3af;
+            --accent: #10b981;
+            --border: rgba(255, 255, 255, 0.1);
+            --youtube-red: #ff0000;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; color: var(--primary); }
+
+        .nav-links button {
+            background: none; border: none; color: var(--text-dim);
+            margin-left: 25px; cursor: pointer; font-weight: 600; font-size: 0.9rem;
+        }
+
+        .nav-links button:hover, .nav-links button.active { color: var(--primary); }
+
+        /* --- PAGE WRAPPER --- */
+        .page {
+            display: none;
+            padding: 120px 8% 60px;
+            min-height: 100vh;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .page.active { display: block; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HOME PAGE --- */
+        .hero { text-align: center; max-width: 800px; margin: 0 auto 80px; }
+        .hero h1 { font-size: 4rem; line-height: 1.1; margin-bottom: 20px; }
+        .hero p { font-size: 1.25rem; color: var(--text-dim); line-height: 1.6; }
+
+        .yt-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 15px 35px;
+            background-color: var(--youtube-red);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+        }
+        .yt-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .info-card h3 { margin-top: 0; color: var(--primary); }
+
+        /* --- VAULT & ENTRIES --- */
+        .vault-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+        
+        .code-entry {
+            background: var(--card-bg);
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .code-entry img { width: 100%; height: 350px; object-fit: cover; border-bottom: 1px solid var(--border); }
+        .entry-content { padding: 30px; }
+        .entry-content h2 { margin: 0 0 10px 0; font-size: 1.8rem; }
+
+        /* --- BUTTONS --- */
+        .btn-view-code {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- CODE VIEWER PAGE --- */
+        #code-viewer-content {
+            background: #000;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        
+        pre {
+            margin: 0;
+            overflow-x: auto;
+            color: var(--accent);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            white-space: pre-wrap;
+        }
+
+        /* --- ADMIN PANEL --- */
+        .studio-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 30px;
+            border: 1px solid var(--primary);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            color: white;
+            border-radius: 12px;
+            font-family: inherit;
+        }
+
+        .btn-action {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { padding: 15px 5%; }
+            .nav-links button { margin-left: 10px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">CODE-EXPLORER</div>
+        <div class="nav-links">
+            <button onclick="navigate('home')" id="nav-home" class="active">HOME</button>
+            <button onclick="navigate('vault')" id="nav-vault">CODE-VAULT</button>
+            <button onclick="navigate('studio')" id="nav-studio">ADMIN PANEL</button>
+        </div>
+    </nav>
+
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Welcome to the official website of<span style="color: var(--primary);"> SHADOW_PROGRAMMER45</span>.</h1>
+            <p>I create best bloxd.io codes for you all to make your gameplay easier. Here you will get all the codes of my channel and tutorial of every code is available on my channel</p>
+            <a href="https://youtube.com/@shadow_programmer45?si=YM2Qywk1NnEtqH4h" target="_blank" class="yt-btn">VISIT MY YOUTUBE CHANNEL</a>
+        </div>
+
+        <div class="channel-grid">
+            <div class="info-card">
+                <h3>Channel Mission</h3>
+                <p>To provide best bloxd codes so that you dont have to make them.</p>
+            </div>
+            <div class="info-card">
+                <h3>Why you should subscribe?</h3>
+                <p>I provide best codes which are made by me and they are tested many times before publishing. If you have any code request then you can ask me for it.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="vault" class="page">
+        <h1 style="text-align: center; margin-bottom: 50px;">THE VAULT</h1>
+        <div class="vault-container" id="projectList"></div>
+    </div>
+
+    <div id="viewer" class="page">
+        <button onclick="navigate('vault')" style="background:none; border:1px solid var(--border); color:white; padding:10px; border-radius:8px; cursor:pointer; margin-bottom:20px;">← Back to Vault</button>
+        <h1 id="viewer-title">Code Snippet</h1>
+        <div id="code-viewer-content">
+            <pre><code id="code-display"></code></pre>
+        </div>
+    </div>
+
+    <div id="studio" class="page">
+        <div class="studio-card">
+            <h2 style="margin-top: 0;">ADMIN PANEL</h2>
+            <input type="password" id="passcode" placeholder="Enter Admin Passcode">
+            
+            <div id="admin-fields" style="opacity: 0.5; pointer-events: none;">
+                <input type="text" id="titleInput" placeholder="Project Title">
+                <textarea id="descInput" placeholder="Description..." rows="3"></textarea>
+                <textarea id="codeInput" placeholder="Paste source code here..." rows="8" style="font-family: monospace;"></textarea>
+                <label style="display: block; margin-top: 15px; font-size: 0.8rem; color: var(--text-dim);">Upload Preview Image:</label>
+                <input type="file" id="imageInput" accept="image/*">
+                <button class="btn-action" onclick="publishCode()">PUBLISH TO VAULT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const MASTER_PASSCODE = "1607";
+
+        // Passcode listener to unlock Admin Panel
+        document.getElementById('passcode').addEventListener('input', (e) => {
+            if(e.target.value === MASTER_PASSCODE) {
+                document.getElementById('admin-fields').style.opacity = "1";
+                document.getElementById('admin-fields').style.pointerEvents = "all";
+            } else {
+                document.getElementById('admin-fields').style.opacity = "0.5";
+                document.getElementById('admin-fields').style.pointerEvents = "none";
+            }
+        });
+
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            if(document.getElementById('nav-' + pageId)) {
+                document.getElementById('nav-' + pageId).classList.add('active');
+            }
+            
+            if(pageId === 'vault') loadVault();
+            window.scrollTo(0, 0);
+        }
+
+        function viewCode(id) {
+            const vault = JSON.parse(localStorage.getItem('myVault')) || [];
+            const item = vault.find(i => i.id === id);
+            if(item) {
+                document.getElementById('viewer-title').innerText = item.title;
+                document.getElementById('code-display').innerText = item.code;
+                navigate('viewer');
+            }
+        }
+
+        function publishCode() {
+            const pass = document.getElementById('passcode').value;
+            if(pass !== MASTER_PASSCODE) return alert("Unauthorized!");
+
+            const title = document.getElementById('titleInput').value;
+            const desc = document.getElementById('descInput').value;
+            const code = document.getElementById('codeInput').value;
+            const imageFile = document.getElementById('imageInput').files[0];
+
+            if (!title || !code) return alert("Title and Code are required!");
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const projectData = {
+                    id: Date.now(),
+                    title, desc, code,
+                    image: e.target.result || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000'
+                };
+
+                let vault = JSON.parse(localStorage.getItem('myVault')) || [];
+                vault.unshift(projectData);
+                localStorage.setItem('myVault', JSON.stringify(vault));
+
+                // Clear
+                document.getElementById('titleInput').value = '';
+                document.getElementById('descInput').value = '';
+                document.getElementById('codeInput').value = '';
+                document.getElementById('passcode').value = '';
+                alert("Published Successfully!");
+                navigate('vault');
+            };
+
+            if (imageFile) reader.readAsDataURL(imageFile);
+            else reader.onload({ target: { result: '' } });
+        }
+
+        function loadVault() {
+            const container = document.getElementById('projectList');
+            const data = JSON.parse(localStorage.getItem('myVault')) || [];
+
+            if (data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:100px; opacity:0.3;"><p>Vault is empty.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(item => `
+                <div class="code-entry">
+                    <button class="delete-btn" onclick="removeItem(${item.id})">Delete</button>
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="entry-content">
+                        <h2>${item.title}</h2>
+                        <p style="color: var(--text-dim);">${item.desc}</p>
+                        <button class="btn-view-code" onclick="viewCode(${item.id})">VIEW SOURCE CODE</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeItem(id) {
+            const check = prompt("Enter Admin Passcode to Delete:");
+            if(check === MASTER_PASSCODE) {
+                let vault = JSON.parse(localStorage.getItem('myVault'));
+                vault = vault.filter(i => i.id !== id);
+                localStorage.setItem('myVault', JSON.stringify(vault));
+                loadVault();
+            } else {
+                alert("Incorrect Passcode!");
+            }
+        }
+
+        window.onload = () => navigate('home');
+    </script>
+</body>
+</html>
