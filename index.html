@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHADOW_PROGRAMMER45 | Official SITE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #030712;
+            --card-bg: #111827;
+            --text-main: #f9fafb;
+            --text-dim: #9ca3af;
+            --accent: #10b981;
+            --border: rgba(255, 255, 255, 0.1);
+            --youtube-red: #ff0000;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; overflow-x: hidden; line-height: 1.6; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 8%; background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(15px); z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -1px; white-space: nowrap; flex-shrink: 0; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links button { background: none; border: none; color: var(--text-dim); margin-left: 20px; cursor: pointer; font-weight: 600; font-size: 0.9rem; white-space: nowrap; }
+        .nav-links button.active { color: var(--text-main); }
+
+        /* Pages */
+        .page { display: none; padding: 120px 8% 60px; min-height: 100vh; max-width: 1200px; margin: 0 auto; }
+        .page.active { display: block; }
+
+        .hero { text-align: center; max-width: 800px; margin: 0 auto 60px; }
+        .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 20px; }
+        .yt-btn {
+            display: inline-block; background: var(--youtube-red); color: white; padding: 16px 35px; 
+            border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .channel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
+        .info-card { background: var(--card-bg); padding: 30px; border-radius: 24px; border: 1px solid var(--border); }
+        .info-card h3 { color: var(--primary); margin-top: 0; }
+
+        /* Vault */
+        .vault-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(100%, 1fr)); gap: 30px; max-width: 800px; margin: 0 auto; }
+        .code-entry { background: var(--card-bg); border-radius: 28px; overflow: hidden; border: 1px solid var(--border); position: relative; }
+        .code-entry img { width: 100%; height: 300px; object-fit: cover; }
+        .entry-content { padding: 30px; }
+        .btn-view { background: var(--primary); color: white; padding: 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; width: 100%; margin-top: 10px; }
+
+        /* Viewer */
+        pre { background: #000; padding: 25px; border-radius: 20px; border: 1px solid var(--border); overflow-x: auto; position: relative; }
+        code { color: var(--accent); font-family: 'Courier New', monospace; white-space: pre-wrap; font-size: 0.95rem; }
+        .copy-btn { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+
+        /* Admin */
+        .studio-card { max-width: 600px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 30px; border: 1px solid var(--primary); }
+        input, textarea { width: 100%; padding: 16px; margin: 10px 0; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: white; border-radius: 12px; font-family: inherit; }
+        .delete-btn { position: absolute; top: 20px; right: 20px; background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
+
+        /* --- MOBILE SPECIFIC CSS (Does not affect Laptop) --- */
+        @media (max-width: 600px) {
+            nav { padding: 12px 4%; }
+            .logo { font-size: 1.1rem; } /* Slightly smaller but keeps original text */
+            
+            .nav-links button { 
+                margin-left: 8px; 
+                font-size: 0.7rem; 
+                padding: 6px 10px; 
+                background: rgba(255,255,255,0.05); 
+                border-radius: 8px; 
+            }
+            
+            .page { padding: 100px 5% 40px; }
+            .hero h1 { font-size: 1.9rem; }
+            .hero p { font-size: 0.9rem; }
+            .yt-btn { width: 100%; padding: 14px 20px; font-size: 0.85rem; }
+            
+            .code-entry img { height: 200px; }
+            .entry-content { padding: 20px; }
+            .entry-content h2 { font-size: 1.3rem; }
+            
+            .studio-card { padding: 25px 20px; border-radius: 20px; }
+            
+            /* Viewer Mobile Fix */
+            #viewer div:first-child { flex-direction: column; gap: 15px; align-items: center; }
+            .copy-btn { position: relative; top: 0; right: 0; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">CODE-EXPLORER</div>
+        <div class="nav-links">
+            <button onclick="navigate('home')" id="nav-home" class="active">HOME</button>
+            <button onclick="navigate('vault')" id="nav-vault">VAULT</button>
+            <button onclick="navigate('studio')" id="nav-studio">ADMIN</button>
+        </div>
+    </nav>
+
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Welcome to the official website of <span style="color: var(--primary);">SHADOW_PROGRAMMER45</span></h1>
+            <p>I create the best bloxd.io codes for you all to make your gameplay easier.</p>
+            <a href="https://www.youtube.com/@SHADOW_PROGRAMMER45" target="_blank" class="yt-btn">VISIT MY YOUTUBE CHANNEL</a>
+        </div>
+
+        <div class="channel-grid">
+            <div class="info-card">
+                <h3>Channel Mission</h3>
+                <p>Providing clean, working, and optimized bloxd codes.</p>
+            </div>
+            <div class="info-card">
+                <h3>Why Subscribe?</h3>
+                <p>Every code published here has a detailed video guide.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="vault" class="page">
+        <h1 style="text-align: center; margin-bottom: 40px;">Code Vault</h1>
+        <div class="vault-container" id="projectList">
+            <p style="text-align: center; opacity: 0.5;">Accessing Database...</p>
+        </div>
+    </div>
+
+    <div id="viewer" class="page">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <button onclick="navigate('vault')" style="background:none; border:1px solid var(--border); color:white; padding:10px 20px; border-radius:10px; cursor:pointer;">← Back</button>
+            <h2 id="viewer-title" style="margin:0;"></h2>
+            <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+        </div>
+        <pre><code id="code-display"></code></pre>
+    </div>
+
+    <div id="studio" class="page">
+        <div class="studio-card">
+            <h2 style="margin-top:0;">ADMIN PANEL</h2>
+            <p id="lock-status" style="color: #ef4444; font-size: 0.9rem;">Locked: Enter Correct Passcode</p>
+            <input type="password" id="passcode" placeholder="Enter Admin Passcode">
+            
+            <div id="admin-fields" style="opacity: 0.1; pointer-events: none;">
+                <input type="text" id="titleInput" placeholder="Project Title">
+                <textarea id="descInput" placeholder="Description..." rows="2"></textarea>
+                <textarea id="codeInput" placeholder="Paste Code Here..." rows="8" style="font-family: monospace;"></textarea>
+                <input type="text" id="imageUrl" placeholder="Image URL (Direct Link)"></textarea>
+                <button class="btn-view" onclick="publishCode()">PUBLISH TO GLOBAL VAULT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",
+            authDomain: "codevault-c7cdf.firebaseapp.com",
+            projectId: "codevault-c7cdf",
+            storageBucket: "codevault-c7cdf.firebasestorage.app",
+            messagingSenderId: "315423955057",
+            appId: "1:315423955057:web:b005a9bf0564caaefa23d0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const _0xkey = "MTYwNw=="; 
+
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
+            if(pageId === 'vault') fetchVault();
+            window.scrollTo(0,0);
+        }
+
+        document.getElementById('passcode').addEventListener('input', (e) => {
+            const fields = document.getElementById('admin-fields');
+            const status = document.getElementById('lock-status');
+            if (e.target.value === atob(_0xkey)) {
+                fields.style.opacity = "1";
+                fields.style.pointerEvents = "all";
+                status.innerText = "Unlocked: Welcome Shadow";
+                status.style.color = "#10b981";
+            } else {
+                fields.style.opacity = "0.1";
+                fields.style.pointerEvents = "none";
+                status.innerText = "Locked: Enter Correct Passcode";
+                status.style.color = "#ef4444";
+            }
+        });
+
+        async function publishCode() {
+            const auth = document.getElementById('passcode').value;
+            const title = document.getElementById('titleInput').value;
+            const desc = document.getElementById('descInput').value;
+            const code = document.getElementById('codeInput').value;
+            const img = document.getElementById('imageUrl').value;
+            if (auth !== atob(_0xkey)) return alert("Wrong passcode!");
+            try {
+                await db.collection("codes").add({
+                    title, desc, code, 
+                    adminKey: auth, 
+                    img: img || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1000",
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("Published Successfully!");
+                document.getElementById('passcode').value = "";
+                navigate('vault');
+            } catch (e) { alert("Firebase Error!"); }
+        }
+
+        function fetchVault() {
+            const container = document.getElementById('projectList');
+            db.collection("codes").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+                const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                container.innerHTML = data.map(item => `
+                    <div class="code-entry">
+                        <button class="delete-btn" onclick="deleteGlobalItem('${item.id}')">Delete</button>
+                        <img src="${item.img}">
+                        <div class="entry-content">
+                            <h2>${item.title}</h2>
+                            <p style="color: var(--text-dim);">${item.desc}</p>
+                            <button class="btn-view" onclick="viewGlobalCode('${item.id}')">VIEW SOURCE CODE</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        async function viewGlobalCode(id) {
+            const doc = await db.collection("codes").doc(id).get();
+            if(doc.exists) {
+                document.getElementById('viewer-title').innerText = doc.data().title;
+                document.getElementById('code-display').innerText = doc.data().code;
+                navigate('viewer');
+            }
+        }
+
+        function copyCode() {
+            const text = document.getElementById('code-display').innerText;
+            navigator.clipboard.writeText(text).then(() => alert("Code copied!"));
+        }
+
+        async function deleteGlobalItem(id) {
+            const auth = prompt("Enter Admin Passcode to Delete:");
+            if(auth === atob(_0xkey)) {
+                await db.collection("codes").doc(id).delete();
+                alert("Deleted.");
+            } else { alert("Incorrect!"); }
+        }
+
+        window.onload = () => navigate('home');
+    </script>
+</body>
+</html>
