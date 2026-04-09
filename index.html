@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHADOW_PROGRAMMER45 | Official Vault</title>
+    <title>SHADOW_PROGRAMMER45 | Official Site</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
         :root {
@@ -31,47 +32,28 @@
             position: relative;
         }
 
-        /* --- ENHANCED BACKGROUND SYSTEM --- */
         body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 35%),
-                radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 35%);
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 35%),
+                        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 35%);
             z-index: -2;
         }
 
         body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 50px 50px;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.25; z-index: -1; pointer-events: none;
             mask-image: radial-gradient(circle at center, black, transparent 90%);
-            -webkit-mask-image: radial-gradient(circle at center, black, transparent 90%);
-            opacity: 0.25;
-            z-index: -1;
-            pointer-events: none;
         }
 
-        /* --- Global Animations --- */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-        /* --- Navigation & Sidebar --- */
         nav {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%;
         }
 
         .logo-box span { color: var(--primary); }
@@ -80,8 +62,7 @@
         .sidebar {
             position: fixed; top: 0; right: -100%; width: 280px; height: 100%;
             background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(25px);
-            z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 80px 30px; border-left: 1px solid var(--border);
+            z-index: 2000; transition: 0.4s; padding: 80px 30px; border-left: 1px solid var(--border);
         }
         .sidebar.active { right: 0; }
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
@@ -93,89 +74,52 @@
             padding: 12px 20px; border-radius: 12px; cursor: pointer;
             font-weight: 600; transition: 0.3s; width: 100%; text-align: left;
         }
-        .nav-links button.active, .sidebar button.active { 
-            background: var(--primary); color: white; box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-        }
+        .nav-links button.active, .sidebar button.active { background: var(--primary); color: white; }
 
-        /* --- Pages --- */
         .page { display: none; padding: 120px 5% 60px; max-width: 900px; margin: 0 auto; }
         .page.active { display: block; }
 
-        /* --- Homepage Elements --- */
         .hero { text-align: center; margin-bottom: 40px; animation: float 6s ease-in-out infinite; }
-        /* --- Homepage Elements --- */
-/* --- Homepage Elements --- */
-.hero h1 { 
-    /* Reduced the min and max slightly to ensure it fits on one line */
-    font-size: clamp(1.2rem, 6vw, 2.2rem); 
-    font-weight: 800; 
-    line-height: 1.2;
-    white-space: nowrap; /* Forces the name to stay on ONE line */
-    letter-spacing: -1px; /* Tightens characters to save space */
-    padding: 0 5px;
-}
-
-/* Specific fix for very small screens (iPhone SE, etc) */
-@media (max-width: 360px) {
-    .hero h1 {
-        font-size: 1.1rem;
-        letter-spacing: -1.5px;
-    }
-}
-        .hero span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .hero h1 { font-size: clamp(1.2rem, 6vw, 2.2rem); font-weight: 800; white-space: nowrap; }
+        .hero span { color: var(--primary); }
         
         .home-card {
             background: var(--surface); border: 1px solid var(--border);
             padding: 30px; border-radius: 24px; margin-bottom: 20px;
             backdrop-filter: blur(10px); transition: 0.3s;
         }
-        .home-card:hover { border-color: var(--primary); transform: translateY(-3px); }
 
         .yt-btn {
             display: block; background: #ff0000; color: white; padding: 20px;
             border-radius: 15px; text-decoration: none; font-weight: 800;
-            text-align: center; margin-top: 20px; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+            text-align: center; transition: 0.3s; border: none; width: 100%; cursor: pointer;
         }
 
-        /* --- Admin Command Center --- */
-        .admin-panel {
-            background: var(--surface); border: 1px solid var(--primary);
-            border-radius: 24px; padding: 30px; backdrop-filter: blur(10px);
-        }
-        .admin-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-        .status-dot { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+        .admin-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 30px; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 10px; }
         
         input, textarea {
             width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px;
-            outline: none; transition: 0.3s;
+            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none;
         }
-        input:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.6); }
-        .required-hint { font-size: 0.75rem; color: var(--danger); margin-top: -10px; margin-bottom: 10px; display: block; }
 
-        /* --- Vault Items --- */
         .banner {
             position: relative; height: 180px; border-radius: 20px; overflow: hidden;
             border: 1px solid var(--border); margin-bottom: 20px; cursor: pointer;
-            animation: float 5s ease-in-out infinite; transition: 0.3s;
         }
-        .banner:hover { border-color: var(--primary); transform: scale(1.02); }
-        .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+        .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
         .banner-overlay {
-            position: absolute; inset: 0; padding: 25px;
-            background: linear-gradient(90deg, rgba(2,6,23,0.95) 45%, transparent);
-            display: flex; justify-content: space-between; align-items: center;
+            position: absolute; inset: 0; padding: 25px; display: flex; 
+            justify-content: space-between; align-items: center;
+            background: linear-gradient(90deg, rgba(2,6,23,0.9) 40%, transparent);
         }
 
         pre { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; overflow-x: auto; border: 1px solid var(--border); }
 
-        /* --- Mobile --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .menu-btn { display: block; }
-            .banner { height: 220px; }
-            .banner-overlay { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 15px; }
+            .banner-overlay { flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; }
         }
     </style>
 </head>
@@ -184,13 +128,13 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
         <button onclick="navigate('home'); toggleSidebar()" id="side-home" class="active">HOME</button>
-        <button onclick="navigate('vault'); toggleSidebar()" id="side-vault">VAULT</button>
+        <button onclick="navigate('vault'); toggleSidebar()" id="side-vault">CODES</button>
         <button onclick="navigate('studio'); toggleSidebar()" id="side-studio">ADMIN PANEL</button>
     </div>
 
     <nav>
         <div class="logo-box" onclick="navigate('home')">
-            <div style="font-weight:800; font-size: 1.2rem; cursor: pointer;">Code<span>_Explorer</span></div>
+            <div style="font-weight:800; font-size: 1.2rem; cursor: pointer;">CODE<span>_EXPLORER</span></div>
         </div>
         <div class="nav-links">
             <button onclick="navigate('home')" id="nav-home" class="active">HOME</button>
@@ -202,176 +146,60 @@
 
     <div id="home" class="page active">
         <div class="hero">
-            <div style="width:80px; height:80px; background:var(--primary); margin:0 auto 20px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-family:'Fira Code'; font-weight:800; box-shadow: 0 0 30px var(--primary);">&lt;/&gt;</div>
+            <div style="width:80px; height:80px; background:var(--primary); margin:0 auto 20px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-family:'Fira Code'; font-weight:800;">&lt;/&gt;</div>
             <h1>SHADOW_<span>PROGRAMMER45</span></h1>
-            <p style="color:var(--text-dim); margin-top:10px;">The Official Site of SHADOW_PROGRAMMER45's YT Channel. Best Bloxd codes available here.</p>
+            <p style="color:var(--text-dim); margin-top:10px;">Official Site of SHADOW_PROGRAMMER45.</p>
         </div>
 
         <div class="home-card">
             <h3 style="color:var(--primary); margin-bottom:10px;">📺 Official Channel Info</h3>
-            <p>Welcome to my site. All codes demonstrated on my YouTube channel are hosted here for 100% free access. No keys, no ads, just code. Click the button at the last to reach out my channel for tutorials.</p>
+            <p>Welcome to the vault. Every code featured on my YouTube channel is uploaded here for easy access. No ads, just performance.</p>
         </div>
 
         <div class="home-card">
             <h3 style="color:var(--accent); margin-bottom:10px;">🚀 My Mission</h3>
-            <p>I build clean, optimized codes to enhance your gameplay. New features and bug fixes are deployed directly to this site weekly.</p>
+            <p>I focus on creating clean, lag-free codes to enhance your Bloxd experience. Everything here is tested and optimized.</p>
         </div>
 
         <a href="https://www.youtube.com/@SHADOW_PROGRAMMER45" target="_blank" class="yt-btn">SUBSCRIBE ON YOUTUBE</a>
     </div>
 
     <div id="vault" class="page">
-        <div id="loading-msg" style="text-align: center; color: var(--primary); font-weight: 800; padding: 40px;">CONNECTING TO DATABASE...</div>
-        <div class="banner-list" id="projectList"></div>
+        <div id="loading-msg" style="text-align: center; color: var(--primary); padding: 40px;">CONNECTING TO DATABASE...</div>
+        <div id="projectList"></div>
     </div>
 
     <div id="viewer" class="page">
         <button onclick="navigate('vault')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800; margin-bottom:15px;">← BACK TO VAULT</button>
         <h1 id="viewer-title" style="margin-bottom:15px;"></h1>
         <pre><code id="code-display" style="color:var(--accent); font-family:'Fira Code';"></code></pre>
-        <button onclick="copyCode()" class="yt-btn" style="background:var(--primary); width:100%; border:none; cursor:pointer;">COPY FULL SOURCE</button>
+        <button onclick="copyCode()" class="yt-btn" style="background:var(--primary); margin-top:20px;">COPY FULL SOURCE</button>
     </div>
 
     <div id="studio" class="page">
         <div class="admin-panel">
-            <div class="admin-header">
-                <div class="status-dot"></div>
-                <h2 style="font-size:1.1rem; letter-spacing:1px;">COMMAND CENTER</h2>
+            <div style="margin-bottom:20px;">
+                <div class="status-dot" id="auth-status" style="background:var(--danger);"></div>
+                <span style="font-weight:800; font-size:0.9rem;">ADMIN COMMAND CENTER</span>
             </div>
             
-            <input type="password" id="passcode" placeholder="ENTER MASTER AUTH KEY">
+            <div id="login-section">
+                <input type="email" id="admin-email" placeholder="ADMIN EMAIL">
+                <input type="password" id="admin-password" placeholder="ADMIN PASSWORD">
+                <button onclick="loginAdmin()" class="yt-btn" style="background:var(--primary); padding:15px;">VERIFY IDENTITY</button>
+                <p id="auth-error" style="color:var(--danger); font-size:0.8rem; text-align:center; display:none; margin-top:10px;"></p>
+            </div>
             
-            <div id="admin-fields" style="opacity: 0.1; pointer-events: none; transition: 0.5s;">
-                <input type="text" id="titleInput" placeholder="Project Name (Required)">
-                <span class="required-hint" id="hint-title" style="display:none;">* Title is missing</span>
-                
-                <textarea id="descInput" placeholder="Script Description (Required)" rows="2"></textarea>
-                <span class="required-hint" id="hint-desc" style="display:none;">* Description is missing</span>
-                
-                <textarea id="codeInput" placeholder="Paste JavaScript Code (Required)" rows="6" style="font-family:monospace;"></textarea>
-                <span class="required-hint" id="hint-code" style="display:none;">* Code body is missing</span>
-                
-                <input type="text" id="imageUrl" placeholder="Imgur Link (Optional)">
-                
-                <button onclick="publishCode()" style="width:100%; background:var(--accent); color:white; border:none; padding:18px; border-radius:12px; font-weight:800; cursor:pointer;">DEPLOY TO DATABASE</button>
+            <div id="admin-fields" style="display: none;">
+                <input type="text" id="titleInput" placeholder="Project Title">
+                <textarea id="descInput" placeholder="Description" rows="2"></textarea>
+                <textarea id="codeInput" placeholder="JavaScript Code" rows="6" style="font-family:monospace;"></textarea>
+                <input type="text" id="imageUrl" placeholder="Image URL (Optional)">
+                <button onclick="publishCode()" style="width:100%; background:var(--accent); color:white; border:none; padding:18px; border-radius:12px; font-weight:800; cursor:pointer;">DEPLOY TO VAULT</button>
+                <button onclick="logoutAdmin()" style="width:100%; background:transparent; color:var(--text-dim); border:none; margin-top:20px; cursor:pointer;">LOGOUT</button>
             </div>
         </div>
     </div>
-
-    <script>
-        // --- FIREBASE CONFIG ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",
-            authDomain: "codevault-c7cdf.firebaseapp.com",
-            projectId: "codevault-c7cdf",
-            storageBucket: "codevault-c7cdf.firebasestorage.app",
-            messagingSenderId: "315423955057",
-            appId: "1:315423955057:web:b005a9bf0564caaefa23d0"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const _0xkey = "MTYwNw=="; 
-
-        // --- NAVIGATION LOGIC ---
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.querySelector('.sidebar-overlay').classList.toggle('active');
-        }
-
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-links button, .sidebar button').forEach(b => b.classList.remove('active'));
-            
-            document.getElementById(pageId).classList.add('active');
-            
-            if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
-            if(document.getElementById('side-' + pageId)) document.getElementById('side-' + pageId).classList.add('active');
-            
-            if(pageId === 'vault') fetchVault();
-            window.scrollTo(0,0);
-        }
-
-        // --- ADMIN AUTH ---
-        document.getElementById('passcode').addEventListener('input', (e) => {
-            const fields = document.getElementById('admin-fields');
-            if (e.target.value === atob(_0xkey)) {
-                fields.style.opacity = "1"; fields.style.pointerEvents = "all";
-            } else {
-                fields.style.opacity = "0.1"; fields.style.pointerEvents = "none";
-            }
-        });
-
-        // --- DATABASE OPERATIONS ---
-        async function publishCode() {
-            const title = document.getElementById('titleInput').value.trim();
-            const desc = document.getElementById('descInput').value.trim();
-            const code = document.getElementById('codeInput').value.trim();
-            const img = document.getElementById('imageUrl').value.trim();
-            const auth = document.getElementById('passcode').value;
-
-            document.querySelectorAll('.required-hint').forEach(h => h.style.display = 'none');
-
-            let isValid = true;
-            if(!title) { document.getElementById('hint-title').style.display = 'block'; isValid = false; }
-            if(!desc) { document.getElementById('hint-desc').style.display = 'block'; isValid = false; }
-            if(!code) { document.getElementById('hint-code').style.display = 'block'; isValid = false; }
-
-            if(!isValid) return;
-
-            try {
-                await db.collection("codes").add({
-                    title, desc, code, adminKey: auth,
-                    img: img || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200",
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert("DEPLOYED SUCCESSFULLY");
-                document.getElementById('titleInput').value = '';
-                document.getElementById('descInput').value = '';
-                document.getElementById('codeInput').value = '';
-                document.getElementById('imageUrl').value = '';
-                navigate('vault');
-            } catch (e) { alert("ERROR DEPLOYING"); }
-        }
-
-        function fetchVault() {
-            const container = document.getElementById('projectList');
-            const loader = document.getElementById('loading-msg');
-            db.collection("codes").orderBy("createdAt", "desc").get().then((snapshot) => {
-                loader.style.display = 'none';
-                container.innerHTML = snapshot.docs.map(doc => {
-                    const data = doc.data();
-                    return `
-                        <div class="banner" onclick="viewCode('${doc.id}')">
-                            <img src="${data.img}" class="banner-img">
-                            <div class="banner-overlay">
-                                <div class="banner-text">
-                                    <h2 style="font-size:1.4rem;">${data.title}</h2>
-                                    <p style="color:var(--text-dim); font-size:0.85rem;">${data.desc}</p>
-                                </div>
-                                <button style="background:var(--primary); color:white; border:none; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;">GET CODE</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            });
-        }
-
-        async function viewCode(id) {
-            const doc = await db.collection("codes").doc(id).get();
-            if(doc.exists) {
-                document.getElementById('viewer-title').innerText = doc.data().title;
-                document.getElementById('code-display').innerText = doc.data().code;
-                navigate('viewer');
-            }
-        }
-
-        function copyCode() {
-            const text = document.getElementById('code-display').innerText;
-            navigator.clipboard.writeText(text).then(() => alert("COPIED TO CLIPBOARD"));
-        }
-
-        window.onload = () => navigate('home');
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
