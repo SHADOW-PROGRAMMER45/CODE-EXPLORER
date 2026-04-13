@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SHADOW_PROGRAMMER45 | Official Site</title>
+    <title>SHADOW_PROGRAMMER45 | Official Vault</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -11,7 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <style>
-        :root {
+                :root {
             --primary: #6366f1;
             --accent: #10b981;
             --bg: #030712; 
@@ -68,16 +68,15 @@
         .sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; display: none; }
         .sidebar-overlay.active { display: block; }
 
-        .nav-links { display: flex; gap: 10px; }
-        .nav-links button, .sidebar button {
-            background: transparent; border: none; color: var(--text-dim);
-            padding: 12px 20px; border-radius: 12px; cursor: pointer;
-            font-weight: 600; transition: 0.3s; width: 100%; text-align: left;
-        }
-        .nav-links button.active, .sidebar button.active { background: var(--primary); color: white; }
 
-        .page { display: none; padding: 120px 5% 60px; max-width: 900px; margin: 0 auto; }
+        .nav-links button {
+            background: transparent; border: none; color: var(--text-dim); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s;
+        }
+        .nav-links button.active { color: var(--primary); background: rgba(99, 102, 241, 0.1); }
+
+        .page { display: none; padding: 100px 5% 50px; max-width: 1000px; margin: 0 auto; animation: pageIn 0.4s ease; }
         .page.active { display: block; }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .hero { text-align: center; margin-bottom: 40px; animation: float 6s ease-in-out infinite; }
         .hero h1 { font-size: clamp(1.2rem, 6vw, 2.2rem); font-weight: 800; white-space: nowrap; }
@@ -95,13 +94,19 @@
             text-align: center; transition: 0.3s; border: none; width: 100%; cursor: pointer;
         }
 
-        .admin-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 30px; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 10px; }
+        /* --- Stylish Command Center --- */
+        .admin-card {
+            background: var(--surface); border: 1px solid var(--surface-border); padding: 40px; border-radius: 28px;
+            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-width: 600px; margin: 0 auto;
+        }
+        .admin-input-group { margin-bottom: 20px; }
+        .admin-input-group label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
         
         input, textarea {
-            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none;
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--surface-border);
+            color: white; padding: 14px 18px; border-radius: 14px; outline: none; transition: 0.3s;
         }
+        input:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
 
         .banner {
             position: relative; height: 180px; border-radius: 20px; overflow: hidden;
@@ -114,18 +119,37 @@
             background: linear-gradient(90deg, rgba(2,6,23,0.9) 40%, transparent);
         }
 
-        pre { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; overflow-x: auto; border: 1px solid var(--border); }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .menu-btn { display: block; }
-            .banner-overlay { flex-direction: column; align-items: flex-start; justify-content: center; gap: 10px; }
+        /* --- Vault Cards --- */
+        .vault-grid { display: grid; gap: 20px; }
+        .vault-card {
+            background: var(--surface); border: 1px solid var(--surface-border); border-radius: 24px; overflow: hidden;
+            display: flex; cursor: pointer; transition: 0.3s; height: 160px;
         }
+        .vault-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(255,255,255,0.03); }
+        .card-img { width: 220px; object-fit: cover; border-right: 1px solid var(--surface-border); }
+        .card-body { padding: 25px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-desc-snippet { color: var(--text-dim); font-size: 0.85rem; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        /* --- Viewer Tabs & Content --- */
+        .tab-bar { display: flex; gap: 30px; border-bottom: 1px solid var(--surface-border); margin-bottom: 25px; }
+        .tab-link { padding: 15px 5px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-weight: 800; font-size: 0.9rem; position: relative; }
+        .tab-link.active { color: var(--primary); }
+        .tab-link.active::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--primary); }
+
+        .video-box { width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 30px; border: 1px solid var(--surface-border); }
+        .code-window { background: #0b0e14; border-radius: 16px; border: 1px solid var(--surface-border); margin-bottom: 20px; overflow: hidden; }
+        .code-head { background: rgba(255,255,255,0.03); padding: 12px 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-dim); border-bottom: 1px solid var(--surface-border); }
+        pre { padding: 20px; overflow-x: auto; font-family: 'Fira Code', monospace; color: #accaf1; font-size: 0.9rem; }
+
+        .btn-main { display: block; width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; text-align: center; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
+        .btn-accent { background: var(--accent); color: white; }
+
+        @media (max-width: 768px) { .vault-card { flex-direction: column; height: auto; } .card-img { width: 100%; height: 140px; border-right: none; border-bottom: 1px solid var(--surface-border); } }
     </style>
 </head>
 <body>
-
-    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
         <button onclick="navigate('home'); toggleSidebar()" id="side-home" class="active">HOME</button>
         <button onclick="navigate('vault'); toggleSidebar()" id="side-vault">CODES</button>
@@ -165,160 +189,187 @@
     </div>
 
     <div id="vault" class="page">
-        <div id="loading-msg" style="text-align: center; color: var(--primary); padding: 40px;">CONNECTING TO DATABASE...</div>
-        <div id="projectList"></div>
+        <h2 style="margin-bottom: 30px;">The Codes</h2>
+        <div id="projectList" class="vault-grid"></div>
     </div>
 
     <div id="viewer" class="page">
-        <button onclick="navigate('vault')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800; margin-bottom:15px;">← BACK TO VAULT</button>
-        <h1 id="viewer-title" style="margin-bottom:15px;"></h1>
-        <pre><code id="code-display" style="color:var(--accent); font-family:'Fira Code';"></code></pre>
-        <button onclick="copyCode()" class="yt-btn" style="background:var(--primary); margin-top:20px;">COPY FULL SOURCE</button>
+        <button onclick="navigate('vault')" style="background:none; border:none; color:var(--primary); font-weight:800; cursor:pointer; margin-bottom:20px;">← RETURN TO LIST</button>
+        
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:30px;">
+            <img id="v-img" src="" style="width:70px; height:70px; border-radius:15px; object-fit:cover;">
+            <div>
+                <h1 id="v-title" style="font-size:1.8rem;">Project</h1>
+                <p id="v-credits" style="color:var(--accent); font-weight:800; font-size:0.8rem; text-transform:uppercase;"></p>
+            </div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-link active" onclick="showTab('t-desc')">OVERVIEW</button>
+            <button class="tab-link" onclick="showTab('t-code')">CODE</button>
+        </div>
+
+        <div id="t-desc" class="tab-pane" style="display:block;">
+            <div id="v-yt-wrap" class="video-box" style="display:none;">
+                <iframe id="v-yt" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
+            </div>
+            <div style="background:var(--surface); padding:30px; border-radius:20px; border:1px solid var(--surface-border);">
+                <p id="v-desc" style="white-space:pre-wrap; color:var(--text-dim);"></p>
+            </div>
+        </div>
+
+        <div id="t-code" class="tab-pane" style="display:none;">
+            <div id="v-w-area" class="code-window" style="display:none;">
+                <div class="code-head">WORLD SETUP</div>
+                <pre><code id="v-w-code"></code></pre>
+            </div>
+            <div id="v-s-area" class="code-window" style="display:none;">
+                <div class="code-head">CODE BLOCK</div>
+                <pre><code id="v-s-code"></code></pre>
+            </div>
+            <button onclick="copyFull()" class="btn-main btn-accent">COPY ALL CODE</button>
+        </div>
     </div>
 
     <div id="studio" class="page">
-        <div class="admin-panel">
-            <div style="margin-bottom:20px;">
-                <div class="status-dot" id="auth-status" style="background:var(--danger);"></div>
-                <span style="font-weight:800; font-size:0.9rem;">ADMIN CONTROL ACCESS</span>
-            </div>
+        <div class="admin-card">
+            <h2 style="text-align:center; margin-bottom:30px; letter-spacing:-1px;">Command Center</h2>
             
-            <div id="login-section">
-                <input type="email" id="admin-email" placeholder="ADMIN EMAIL">
-                <input type="password" id="admin-password" placeholder="ADMIN PASSWORD">
-                <button onclick="loginAdmin()" class="yt-btn" style="background:var(--primary); padding:15px;">VERIFY IDENTITY</button>
-                <p id="auth-error" style="color:var(--danger); font-size:0.8rem; text-align:center; display:none; margin-top:10px;"></p>
+            <div id="login-ui">
+                <div class="admin-input-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="log-email" placeholder="Enter verified email">
+                </div>
+                <div class="admin-input-group">
+                    <label>Access Key</label>
+                    <input type="password" id="log-pass" placeholder="Enter password">
+                </div>
+                <button onclick="doLogin()" class="btn-main btn-primary">AUTHENTICATE</button>
             </div>
-            
-            <div id="admin-fields" style="display: none;">
-                <input type="text" id="titleInput" placeholder="Project Title">
-                <textarea id="descInput" placeholder="Description" rows="2"></textarea>
-                <textarea id="codeInput" placeholder="JavaScript Code" rows="6" style="font-family:monospace;"></textarea>
-                <input type="text" id="imageUrl" placeholder="Image URL (Optional)">
-                <button onclick="publishCode()" style="width:100%; background:var(--accent); color:white; border:none; padding:18px; border-radius:12px; font-weight:800; cursor:pointer;">DEPLOY TO VAULT</button>
-                <button onclick="logoutAdmin()" style="width:100%; background:transparent; color:var(--text-dim); border:none; margin-top:20px; cursor:pointer;">LOGOUT</button>
+
+            <div id="admin-ui" style="display:none;">
+                <div class="admin-input-group"><label>Project Title</label><input type="text" id="in-title"></div>
+                <div class="admin-input-group"><label>Author/Credits</label><input type="text" id="in-creds"></div>
+                <div class="admin-input-group"><label>YouTube Link</label><input type="text" id="in-yt"></div>
+                <div class="admin-input-group"><label>Detailed Description</label><textarea id="in-desc" rows="4"></textarea></div>
+                <div class="admin-input-group"><label>World Code</label><textarea id="in-w" rows="2" style="font-family:monospace;"></textarea></div>
+                <div class="admin-input-group"><label>Script Code</label><textarea id="in-s" rows="4" style="font-family:monospace;"></textarea></div>
+                <div class="admin-input-group"><label>Thumb URL</label><input type="text" id="in-img"></div>
+                <button onclick="doPublish()" class="btn-main btn-accent">DEPLOY TO VAULT</button>
+                <button onclick="doLogout()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:20px; cursor:pointer; font-size:0.8rem; font-weight:800;">TERMINATE SESSION</button>
             </div>
         </div>
     </div>
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",
-    authDomain: "codevault-c7cdf.firebaseapp.com",
-    projectId: "codevault-c7cdf",
-    storageBucket: "codevault-c7cdf.firebasestorage.app",
-    messagingSenderId: "315423955057",
-    appId: "1:315423955057:web:b005a9bf0564caaefa23d0"
-};
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",
+            authDomain: "codevault-c7cdf.firebaseapp.com",
+            projectId: "codevault-c7cdf",
+            storageBucket: "codevault-c7cdf.firebasestorage.app",
+            messagingSenderId: "315423955057",
+            appId: "1:315423955057:web:b005a9bf0564caaefa23d0"
+        };
 
-// --- AUTH LOGIC ---
-async function loginAdmin() {
-    const email = document.getElementById('admin-email').value;
-    const password = document.getElementById('admin-password').value;
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-    } catch (e) {
-        const err = document.getElementById('auth-error');
-        err.innerText = "Error: " + e.message;
-        err.style.display = 'block';
-    }
-}
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const D_IMG = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0MPGvpZfxl_iwXdL9197fLSVMBzm-7PLtw&s";
 
-function logoutAdmin() { auth.signOut(); }
+        function navigate(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            if(document.getElementById('nav-'+id)) document.getElementById('nav-'+id).classList.add('active');
+            if(id === 'vault') fetchV();
+            window.scrollTo(0,0);
+        }
 
-auth.onAuthStateChanged((user) => {
-    document.getElementById('login-section').style.display = user ? 'none' : 'block';
-    document.getElementById('admin-fields').style.display = user ? 'block' : 'none';
-    document.getElementById('auth-status').style.background = user ? 'var(--accent)' : 'var(--danger)';
-    fetchVault(); 
-});
+        function showTab(id) {
+            document.querySelectorAll('.tab-pane').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
+            event.target.classList.add('active');
+        }
 
-// --- NAVIGATION ---
-function navigate(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links button, .sidebar button').forEach(b => b.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    if(document.getElementById('nav-'+pageId)) document.getElementById('nav-'+pageId).classList.add('active');
-    if(pageId === 'vault') fetchVault();
-    window.scrollTo(0,0);
-}
+        async function doLogin() {
+            try { await auth.signInWithEmailAndPassword(document.getElementById('log-email').value, document.getElementById('log-pass').value); } 
+            catch (e) { alert(e.message); }
+        }
+        function doLogout() { auth.signOut(); }
 
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-    document.querySelector('.sidebar-overlay').classList.toggle('active');
-}
-
-// --- DATABASE ---
-async function publishCode() {
-    const title = document.getElementById('titleInput').value.trim();
-    const desc = document.getElementById('descInput').value.trim();
-    const code = document.getElementById('codeInput').value.trim();
-    const img = document.getElementById('imageUrl').value.trim();
-
-    if(!title || !desc || !code) return alert("Fill all fields!");
-
-    try {
-        await db.collection("codes").add({
-            title, desc, code,
-            img: img || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        auth.onAuthStateChanged(user => {
+            document.getElementById('login-ui').style.display = user ? 'none' : 'block';
+            document.getElementById('admin-ui').style.display = user ? 'block' : 'none';
+            fetchV();
         });
-        alert("DEPLOYED!");
-        navigate('vault');
-    } catch (e) { alert("Error: " + e.message); }
-}
 
-function fetchVault() {
-    const container = document.getElementById('projectList');
-    db.collection("codes").orderBy("createdAt", "desc").get().then((snapshot) => {
-        document.getElementById('loading-msg').style.display = 'none';
-        container.innerHTML = snapshot.docs.map(doc => {
-            const data = doc.data();
-            const delBtn = auth.currentUser ? `<button onclick="deleteCode('${doc.id}', event)" style="background:var(--danger); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:700; cursor:pointer; margin-left:10px;">DELETE</button>` : '';
-            return `
-                <div class="banner" onclick="viewCode('${doc.id}')">
-                    <img src="${data.img}" class="banner-img">
-                    <div class="banner-overlay">
-                        <div>
-                            <h2 style="font-size:1.4rem;">${data.title}</h2>
-                            <p style="color:var(--text-dim); font-size:0.85rem;">${data.desc}</p>
-                        </div>
-                        <div style="display:flex; align-items:center;">
-                            <button style="background:var(--primary); color:white; border:none; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;">GET CODE</button>
-                            ${delBtn}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    });
-}
+        async function doPublish() {
+            const d = {
+                title: document.getElementById('in-title').value,
+                creds: document.getElementById('in-creds').value,
+                yt: document.getElementById('in-yt').value,
+                desc: document.getElementById('in-desc').value,
+                w: document.getElementById('in-w').value,
+                s: document.getElementById('in-s').value,
+                img: document.getElementById('in-img').value || D_IMG,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            await db.collection("codes").add(d);
+            alert("SUCCESS"); navigate('vault');
+        }
 
-async function deleteCode(id, event) {
-    event.stopPropagation();
-    if(confirm("Delete this code?")) {
-        await db.collection("codes").doc(id).delete();
-        fetchVault();
-    }
-}
+        function fetchV() {
+            db.collection("codes").orderBy("createdAt", "desc").get().then(snap => {
+                document.getElementById('projectList').innerHTML = snap.docs.map(doc => {
+                    const data = doc.data();
+                    const del = auth.currentUser ? `<button onclick="doDel('${doc.id}', event)" style="color:var(--danger); background:none; border:none; cursor:pointer; font-weight:800; margin-left:15px;">DELETE</button>` : '';
+                    return `
+                        <div class="vault-card" onclick="viewDoc('${doc.id}')">
+                            <img src="${data.img}" class="card-img">
+                            <div class="card-body">
+                                <h3 style="font-size:1.2rem;">${data.title}</h3>
+                                <p class="card-desc-snippet">${data.desc}</p>
+                                <div style="margin-top:15px; display:flex; align-items:center;">
+                                    <span style="font-size:0.7rem; color:var(--primary); font-weight:800;">${data.creds || 'SHADOW_P45'}</span>
+                                    ${del}
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+            });
+        }
 
-async function viewCode(id) {
-    const doc = await db.collection("codes").doc(id).get();
-    if(doc.exists) {
-        document.getElementById('viewer-title').innerText = doc.data().title;
-        document.getElementById('code-display').innerText = doc.data().code;
-        navigate('viewer');
-    }
-}
+        async function doDel(id, e) { e.stopPropagation(); if(confirm("Delete?")) { await db.collection("codes").doc(id).delete(); fetchV(); } }
 
-function copyCode() {
-    const text = document.getElementById('code-display').innerText;
-    navigator.clipboard.writeText(text).then(() => alert("COPIED"));
-}
+        async function viewDoc(id) {
+            const doc = await db.collection("codes").doc(id).get();
+            const d = doc.data();
+            document.getElementById('v-title').innerText = d.title;
+            document.getElementById('v-credits').innerText = "By " + (d.creds || "Shadow Programmer");
+            document.getElementById('v-desc').innerText = d.desc;
+            document.getElementById('v-img').src = d.img;
+            
+            if(d.yt) {
+                let vid = d.yt.includes('v=') ? d.yt.split('v=')[1].split('&')[0] : d.yt.split('/').pop();
+                document.getElementById('v-yt').src = `https://www.youtube.com/embed/${vid}`;
+                document.getElementById('v-yt-wrap').style.display = 'block';
+            } else { document.getElementById('v-yt-wrap').style.display = 'none'; }
 
-window.onload = () => navigate('home');</script>
+            document.getElementById('v-w-area').style.display = d.w ? 'block' : 'none';
+            document.getElementById('v-w-code').innerText = d.w || '';
+            document.getElementById('v-s-area').style.display = d.s ? 'block' : 'none';
+            document.getElementById('v-s-code').innerText = d.s || '';
+
+            navigate('viewer');
+        }
+
+        function copyFull() {
+            const c = `// WORLD\n${document.getElementById('v-w-code').innerText}\n\n// SCRIPT\n${document.getElementById('v-s-code').innerText}`;
+            navigator.clipboard.writeText(c).then(() => alert("COPIED"));
+        }
+
+        window.onload = () => navigate('home');
+    </script>
 </body>
 </html>
