@@ -101,7 +101,21 @@
     background: rgba(99, 102, 241, 0.15);
     border-color: var(--primary);
 }
+.sidebar-overlay {
+    position: fixed;
+    inset: 0; /* Shortcut for top:0; left:0; right:0; bottom:0; */
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+    backdrop-filter: blur(4px);
+    z-index: 1500; /* Must be lower than sidebar (2000) but higher than everything else */
+    display: none; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
+.sidebar-overlay.active {
+    display: block; /* Make it visible when the class is added */
+    opacity: 1;
+}
         .nav-links button {
             background: transparent; border: none; color: var(--text-dim); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s;
         }
