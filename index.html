@@ -144,9 +144,27 @@
         .btn-main { display: block; width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; text-align: center; text-decoration: none; }
         .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
         .btn-accent { background: var(--accent); color: white; }
+/* Ensure the button is visible on mobile */
+@media (max-width: 768px) {
+    .menu-btn { 
+        display: block; 
+    }
+    .nav-links { 
+        display: none; /* Hide top links on mobile */
+    }
+    .vault-card { 
+        flex-direction: column; 
+        height: auto; 
+    }
+    .card-img { 
+        width: 100%; 
+        height: 140px; 
+        border-right: none; 
+        border-bottom: 1px solid var(--border); 
+    }
+}
 
-        @media (max-width: 768px) { .vault-card { flex-direction: column; height: auto; } .card-img { width: 100%; height: 140px; border-right: none; border-bottom: 1px solid var(--surface-border); } }
-    </style>
+</style>
 </head>
 <body>
         <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
