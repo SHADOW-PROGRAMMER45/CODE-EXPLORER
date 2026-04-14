@@ -1,118 +1,336 @@
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
-<meta charset=UTF-8>
-<meta name=viewport content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SHADOW_PROGRAMMER45 | Official Vault</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel=stylesheet>
-<script src=https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js></script>
-<script src=https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js></script>
-<script src=https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js></script>
-<style>:root{--primary:#6366f1;--accent:#10b981;--bg:#030712;--surface:rgba(15,23,42,0.7);--text:#fff;--text-dim:#94a3b8;--border:rgba(255,255,255,0.08);--danger:#ef4444}*{box-sizing:border-box;margin:0;padding:0;font-family:'Plus Jakarta Sans',sans-serif}body{background-color:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;position:relative}body::before{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 15% 15%,rgba(99,102,241,0.15) 0,transparent 35%),radial-gradient(circle at 85% 85%,rgba(16,185,129,0.12) 0,transparent 35%);z-index:-2}body::after{content:"";position:fixed;top:0;left:0;width:100%;height:100%;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:50px 50px;opacity:.25;z-index:-1;pointer-events:none;mask-image:radial-gradient(circle at center,black,transparent 90%)}@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(3,7,18,0.8);backdrop-filter:blur(15px);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;padding:1rem 5%}.logo-box span{color:var(--primary)}.menu-btn{font-size:1.5rem;background:0;border:0;color:white;cursor:pointer;display:none}.sidebar{position:fixed;top:0;right:-100%;width:280px;height:100%;background:rgba(2,6,23,0.98);backdrop-filter:blur(25px);z-index:2000;transition:.4s cubic-bezier(0.16,1,0.3,1);padding:100px 30px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:20px}.sidebar.active{right:0}.sidebar button{background:transparent;border:1px solid transparent;color:var(--text-dim);padding:15px;border-radius:12px;cursor:pointer;font-weight:700;text-align:left;font-size:1.1rem;transition:.3s;width:100%}.sidebar button.active{color:var(--text);background:rgba(99,102,241,0.15);border-color:var(--primary)}.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:1500;display:none;opacity:0;transition:opacity .3s ease}.sidebar-overlay.active{display:block;opacity:1}.nav-links button{background:transparent;border:0;color:var(--text-dim);padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:700;transition:.2s}.nav-links button.active{color:var(--primary);background:rgba(99,102,241,0.1)}.page{display:none;padding:100px 5% 50px;max-width:1000px;margin:0 auto;animation:pageIn .4s ease}.page.active{display:block}@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.hero{text-align:center;margin-bottom:40px;animation:float 6s ease-in-out infinite}.hero h1{font-size:clamp(1.2rem,6vw,2.2rem);font-weight:800;white-space:nowrap}.hero span{color:var(--primary)}.home-card{background:var(--surface);border:1px solid var(--border);padding:30px;border-radius:24px;margin-bottom:20px;backdrop-filter:blur(10px);transition:.3s}.yt-btn{display:block;background:#f00;color:white;padding:20px;border-radius:15px;text-decoration:none;font-weight:800;text-align:center;transition:.3s;border:0;width:100%;cursor:pointer}.admin-card{background:var(--surface);border:1px solid var(--surface-border);padding:40px;border-radius:28px;backdrop-filter:blur(10px);box-shadow:0 20px 50px rgba(0,0,0,0.3);max-width:600px;margin:0 auto}.admin-input-group{margin-bottom:20px}.admin-input-group label{display:block;font-size:.75rem;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:8px;letter-spacing:1px}input,textarea{width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--surface-border);color:white;padding:14px 18px;border-radius:14px;outline:0;transition:.3s}input:focus,textarea:focus{border-color:var(--primary);background:rgba(0,0,0,0.5)}.banner{position:relative;height:180px;border-radius:20px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px;cursor:pointer}.banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}.banner-overlay{position:absolute;inset:0;padding:25px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,rgba(2,6,23,0.9) 40%,transparent)}.vault-grid{display:grid;gap:20px}.vault-card{background:var(--surface);border:1px solid var(--surface-border);border-radius:24px;overflow:hidden;display:flex;cursor:pointer;transition:.3s;height:160px}.vault-card:hover{transform:translateY(-5px);border-color:var(--primary);background:rgba(255,255,255,0.03)}.card-img{width:220px;height:160px;object-fit:cover;border-right:1px solid var(--surface-border)}.card-body{padding:25px;flex:1;display:flex;flex-direction:column;justify-content:center}.card-desc-snippet{color:var(--text-dim);font-size:.85rem;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.tab-bar{display:flex;gap:30px;border-bottom:1px solid var(--surface-border);margin-bottom:25px}.tab-link{padding:15px 5px;background:0;border:0;color:var(--text-dim);cursor:pointer;font-weight:800;font-size:.9rem;position:relative}.tab-link.active{color:var(--primary)}.tab-link.active::after{content:"";position:absolute;bottom:-1px;left:0;width:100%;height:2px;background:var(--primary)}.video-box{width:100%;aspect-ratio:16/9;border-radius:20px;overflow:hidden;background:#000;margin-bottom:30px;border:1px solid var(--surface-border)}.code-window{background:#0b0e14;border-radius:16px;border:1px solid var(--surface-border);margin-bottom:20px;overflow:hidden}.code-head{background:rgba(255,255,255,0.03);padding:12px 20px;font-size:.75rem;font-weight:800;color:var(--text-dim);border-bottom:1px solid var(--surface-border)}pre{padding:20px;overflow-x:auto;font-family:'Fira Code',monospace;color:#accaf1;font-size:.9rem}.btn-main{display:block;width:100%;padding:16px;border-radius:14px;border:0;font-weight:800;cursor:pointer;transition:.3s;text-align:center;text-decoration:none}.btn-primary{background:var(--primary);color:white;box-shadow:0 10px 20px rgba(99,102,241,0.2)}.btn-accent{background:var(--accent);color:white}@media(max-width:768px){.menu-btn{display:block}.nav-links{display:none}.vault-card{flex-direction:column;height:auto}.card-img{width:100%;height:auto;max-height:250px;object-fit:contain;background-color:#000;border-right:0;border-bottom:1px solid var(--surface-border)}}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SHADOW_PROGRAMMER45 | Official Vault</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <style>
+                :root {
+            --primary: #6366f1;
+            --accent: #10b981;
+            --bg: #030712; 
+            --surface: rgba(15, 23, 42, 0.7);
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --danger: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 35%),
+                        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.12) 0%, transparent 35%);
+            z-index: -2;
+        }
+
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.25; z-index: -1; pointer-events: none;
+            mask-image: radial-gradient(circle at center, black, transparent 90%);
+        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; padding: 1rem 5%;
+        }
+
+        .logo-box span { color: var(--primary); }
+        .menu-btn { font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer; display: none; }
+        .sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100%;
+    background: rgba(2, 6, 23, 0.98); 
+    backdrop-filter: blur(25px);
+    z-index: 2000;
+    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    padding: 100px 30px;
+    border-left: 1px solid var(--border);
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+.sidebar button {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-dim);
+    padding: 15px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    text-align: left; 
+    font-size: 1.1rem;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.sidebar button.active {
+    color: var(--text);
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--primary);
+}
+.sidebar-overlay {
+    position: fixed;
+    inset: 0; 
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1500; 
+    display: none; 
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block; 
+    opacity: 1;
+}
+        .nav-links button {
+            background: transparent; border: none; color: var(--text-dim); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.2s;
+        }
+        .nav-links button.active { color: var(--primary); background: rgba(99, 102, 241, 0.1); }
+
+        .page { display: none; padding: 100px 5% 50px; max-width: 1000px; margin: 0 auto; animation: pageIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero { text-align: center; margin-bottom: 40px; animation: float 6s ease-in-out infinite; }
+        .hero h1 { font-size: clamp(1.2rem, 6vw, 2.2rem); font-weight: 800; white-space: nowrap; }
+        .hero span { color: var(--primary); }
+        
+        .home-card {
+            background: var(--surface); border: 1px solid var(--border);
+            padding: 30px; border-radius: 24px; margin-bottom: 20px;
+            backdrop-filter: blur(10px); transition: 0.3s;
+        }
+
+        .yt-btn {
+            display: block; background: #ff0000; color: white; padding: 20px;
+            border-radius: 15px; text-decoration: none; font-weight: 800;
+            text-align: center; transition: 0.3s; border: none; width: 100%; cursor: pointer;
+        }
+
+        .admin-card {
+            background: var(--surface); border: 1px solid var(--surface-border); padding: 40px; border-radius: 28px;
+            backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-width: 600px; margin: 0 auto;
+        }
+        .admin-input-group { margin-bottom: 20px; }
+        .admin-input-group label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+        
+        input, textarea {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--surface-border);
+            color: white; padding: 14px 18px; border-radius: 14px; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+
+        .banner {
+            position: relative; height: 180px; border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--border); margin-bottom: 20px; cursor: pointer;
+        }
+        .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+        .banner-overlay {
+            position: absolute; inset: 0; padding: 25px; display: flex; 
+            justify-content: space-between; align-items: center;
+            background: linear-gradient(90deg, rgba(2,6,23,0.9) 40%, transparent);
+        }
+
+        .vault-grid { display: grid; gap: 20px; }
+        .vault-card {
+            background: var(--surface); border: 1px solid var(--surface-border); border-radius: 24px; overflow: hidden;
+            display: flex; cursor: pointer; transition: 0.3s; height: 160px;
+        }
+        .vault-card:hover { transform: translateY(-5px); border-color: var(--primary); background: rgba(255,255,255,0.03); }
+        .card-img {
+    width: 220px;
+    height: 160px; 
+    object-fit: cover; 
+    border-right: 1px solid var(--surface-border);
+}
+
+        .card-body { padding: 25px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-desc-snippet { color: var(--text-dim); font-size: 0.85rem; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+
+
+        .tab-bar { display: flex; gap: 30px; border-bottom: 1px solid var(--surface-border); margin-bottom: 25px; }
+        .tab-link { padding: 15px 5px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-weight: 800; font-size: 0.9rem; position: relative; }
+        .tab-link.active { color: var(--primary); }
+        .tab-link.active::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--primary); }
+
+        .video-box { width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: #000; margin-bottom: 30px; border: 1px solid var(--surface-border); }
+        .code-window { background: #0b0e14; border-radius: 16px; border: 1px solid var(--surface-border); margin-bottom: 20px; overflow: hidden; }
+        .code-head { background: rgba(255,255,255,0.03); padding: 12px 20px; font-size: 0.75rem; font-weight: 800; color: var(--text-dim); border-bottom: 1px solid var(--surface-border); }
+        pre { padding: 20px; overflow-x: auto; font-family: 'Fira Code', monospace; color: #accaf1; font-size: 0.9rem; }
+
+        .btn-main { display: block; width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; text-align: center; text-decoration: none; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
+        .btn-accent { background: var(--accent); color: white; }
+
+@media (max-width: 768px) {
+    .menu-btn { 
+        display: block; 
+    }
+    .nav-links { 
+        display: none; 
+    }
+    .vault-card { 
+        flex-direction: column; 
+        height: auto; 
+    }
+    .card-img {
+        width: 100%;
+        height: auto; 
+        max-height: 250px; 
+        object-fit: contain; 
+        background-color: #000; 
+        border-right: none;
+        border-bottom: 1px solid var(--surface-border);
+    }
+}
+
+</style>
 </head>
 <body>
-<div class=sidebar-overlay onclick=toggleSidebar()></div>
-<div class=sidebar id=sidebar>
-<button onclick="navigate('home');toggleSidebar()" id=side-home class=active>HOME</button>
-<button onclick="navigate('vault');toggleSidebar()" id=side-vault>CODES</button>
-<button onclick="navigate('studio');toggleSidebar()" id=side-studio>ADMIN PANEL</button>
-</div>
-<nav>
-<div class=logo-box onclick="navigate('home')">
-<div style=font-weight:800;font-size:1.2rem;cursor:pointer>CODE<span>_EXPLORER</span></div>
-</div>
-<div class=nav-links>
-<button onclick="navigate('home')" id=nav-home class=active>HOME</button>
- <button onclick="navigate('vault')" id=nav-vault>CODES</button>
-<button onclick="navigate('studio')" id=nav-studio>ADMIN</button>
-</div>
-<button class=menu-btn onclick=toggleSidebar()>☰</button>
-</nav>
-<div id=home class="page active">
-<div class=hero>
-<div style="width:80px;height:80px;background:var(--primary);margin:0 auto 20px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-family:'Fira Code';font-weight:800">&lt;/&gt;</div>
-<h1>SHADOW_<span>PROGRAMMER45</span></h1>
-<p style=color:var(--text-dim);margin-top:10px>Official Site of SHADOW_PROGRAMMER45.</p>
-</div>
-<div class=home-card>
-<h3 style=color:var(--primary);margin-bottom:10px>📺 Official Channel Info</h3>
-<p>Welcome to the vault. Every code featured on my YouTube channel is uploaded here for easy access. No ads, just performance.</p>
-</div>
-<div class=home-card>
-<h3 style=color:var(--accent);margin-bottom:10px>🚀 My Mission</h3>
-<p>I focus on creating clean, lag-free codes to enhance your Bloxd experience. Everything here is tested and optimized.</p>
-</div>
-<a href=https://www.youtube.com/@SHADOW_PROGRAMMER45 target=_blank class=yt-btn>SUBSCRIBE ON YOUTUBE</a>
-</div>
-<div id=vault class=page>
-<h2 style=margin-bottom:30px>The Codes</h2>
-<div id=projectList class=vault-grid></div>
-</div>
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <button onclick="navigate('home'); toggleSidebar()" id="side-home" class="active">HOME</button>
+        <button onclick="navigate('vault'); toggleSidebar()" id="side-vault">CODES</button>
+        <button onclick="navigate('studio'); toggleSidebar()" id="side-studio">ADMIN PANEL</button>
+    </div>
 
+    <nav>
+        <div class="logo-box" onclick="navigate('home')">
+            <div style="font-weight:800; font-size: 1.2rem; cursor: pointer;">CODE<span>_EXPLORER</span></div>
+        </div>
+        <div class="nav-links">
+            <button onclick="navigate('home')" id="nav-home" class="active">HOME</button>
+            <button onclick="navigate('vault')" id="nav-vault">CODES</button>
+            <button onclick="navigate('studio')" id="nav-studio">ADMIN</button>
+        </div>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    </nav>
 
-    <div id=viewer class=page>
-<button onclick="navigate('vault')" style=background:0;border:0;color:var(--primary);font-weight:800;cursor:pointer;margin-bottom:20px>← RETURN TO LIST</button>
-<div style=display:flex;gap:20px;align-items:center;margin-bottom:30px>
-<img id=v-img src style=width:70px;height:70px;border-radius:15px;object-fit:cover>
-<div>
-<h1 id=v-title style=font-size:1.8rem>Project</h1>
-<p id=v-credits style=color:var(--accent);font-weight:800;font-size:.8rem;text-transform:uppercase></p>
-</div>
-</div>
-    <div class=tab-bar>
-<button class="tab-link active" onclick="showTab('t-desc')">OVERVIEW</button>
-<button class=tab-link onclick="showTab('t-code')">CODE</button>
-</div>
-<div id=t-desc class=tab-pane style=display:block>
-<div id=v-yt-wrap class=video-box style=display:none>
-<iframe id=v-yt style=width:100%;height:100%;border:0 allowfullscreen></iframe>
-</div>
-<div style="background:var(--surface);padding:30px;border-radius:20px;border:1px solid var(--surface-border)">
-<p id=v-desc style=white-space:pre-wrap;color:var(--text-dim)></p>
-</div>
-</div>
-<div id=t-code class=tab-pane style=display:none>
-<div id=v-w-area class=code-window style=display:none>
-<div class=code-head>WORLD SETUP</div>
-<pre><code id="v-w-code"></code></pre>
-</div>
-<div id=v-s-area class=code-window style=display:none>
-<div class=code-head>CODE BLOCK</div>
-<pre><code id="v-s-code"></code></pre>
-</div>
-<button onclick=copyFull() class="btn-main btn-accent">COPY ALL CODE</button>
-</div>
-</div>
-<div id=studio class=page>
-<div class=admin-card>
-<h2 style=text-align:center;margin-bottom:30px;letter-spacing:-1px>Command Center</h2>
-<div id=login-ui>
-<div class=admin-input-group>
-<label>Admin Email</label>
-<input type=email id=log-email placeholder="Enter verified email">
-</div>
-<div class=admin-input-group>
-<label>Access Key</label>
-<input type=password id=log-pass placeholder="Enter password">
-</div>
-<button onclick=doLogin() class="btn-main btn-primary">AUTHENTICATE</button>
-</div>
-<div id=admin-ui style=display:none>
-<div class=admin-input-group><label>Project Title</label><input type=text id=in-title></div>
-<div class=admin-input-group><label>Author/Credits</label><input type=text id=in-creds></div>
-<div class=admin-input-group><label>YouTube Link</label><input type=text id=in-yt></div>
-<div class=admin-input-group><label>Detailed Description</label><textarea id=in-desc rows=4></textarea></div>
-<div class=admin-input-group><label>World Code</label><textarea id=in-w rows=2 style=font-family:monospace></textarea></div>
-<div class=admin-input-group><label>Script Code</label><textarea id=in-s rows=4 style=font-family:monospace></textarea></div>
-<div class=admin-input-group><label>Thumb URL</label><input type=text id=in-img></div>
-<button onclick=doPublish() class="btn-main btn-accent">DEPLOY TO VAULT</button>
+    <div id="home" class="page active">
+        <div class="hero">
+            <div style="width:80px; height:80px; background:var(--primary); margin:0 auto 20px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; font-family:'Fira Code'; font-weight:800;">&lt;/&gt;</div>
+            <h1>SHADOW_<span>PROGRAMMER45</span></h1>
+            <p style="color:var(--text-dim); margin-top:10px;">Official Site of SHADOW_PROGRAMMER45.</p>
+        </div>
 
-    
-<button onclick=doLogout() style=width:100%;background:0;border:0;color:var(--text-dim);margin-top:20px;cursor:pointer;font-size:.8rem;font-weight:800>TERMINATE SESSION</button>
-</div>
-</div>
-</div>
-    
+        <div class="home-card">
+            <h3 style="color:var(--primary); margin-bottom:10px;">📺 Official Channel Info</h3>
+            <p>Welcome to the vault. Every code featured on my YouTube channel is uploaded here for easy access. No ads, just performance.</p>
+        </div>
+
+        <div class="home-card">
+            <h3 style="color:var(--accent); margin-bottom:10px;">🚀 My Mission</h3>
+            <p>I focus on creating clean, lag-free codes to enhance your Bloxd experience. Everything here is tested and optimized.</p>
+        </div>
+
+        <a href="https://www.youtube.com/@SHADOW_PROGRAMMER45" target="_blank" class="yt-btn">SUBSCRIBE ON YOUTUBE</a>
+    </div>
+
+    <div id="vault" class="page">
+        <h2 style="margin-bottom: 30px;">The Codes</h2>
+        <div id="projectList" class="vault-grid"></div>
+    </div>
+
+    <div id="viewer" class="page">
+        <button onclick="navigate('vault')" style="background:none; border:none; color:var(--primary); font-weight:800; cursor:pointer; margin-bottom:20px;">← RETURN TO LIST</button>
+        
+        <div style="display:flex; gap:20px; align-items:center; margin-bottom:30px;">
+            <img id="v-img" src="" style="width:70px; height:70px; border-radius:15px; object-fit:cover;">
+            <div>
+                <h1 id="v-title" style="font-size:1.8rem;">Project</h1>
+                <p id="v-credits" style="color:var(--accent); font-weight:800; font-size:0.8rem; text-transform:uppercase;"></p>
+            </div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-link active" onclick="showTab('t-desc')">OVERVIEW</button>
+            <button class="tab-link" onclick="showTab('t-code')">CODE</button>
+        </div>
+
+        <div id="t-desc" class="tab-pane" style="display:block;">
+            <div id="v-yt-wrap" class="video-box" style="display:none;">
+                <iframe id="v-yt" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
+            </div>
+            <div style="background:var(--surface); padding:30px; border-radius:20px; border:1px solid var(--surface-border);">
+                <p id="v-desc" style="white-space:pre-wrap; color:var(--text-dim);"></p>
+            </div>
+        </div>
+
+        <div id="t-code" class="tab-pane" style="display:none;">
+            <div id="v-w-area" class="code-window" style="display:none;">
+                <div class="code-head">WORLD SETUP</div>
+                <pre><code id="v-w-code"></code></pre>
+            </div>
+            <div id="v-s-area" class="code-window" style="display:none;">
+                <div class="code-head">CODE BLOCK</div>
+                <pre><code id="v-s-code"></code></pre>
+            </div>
+            <button onclick="copyFull()" class="btn-main btn-accent">COPY ALL CODE</button>
+        </div>
+    </div>
+
+    <div id="studio" class="page">
+        <div class="admin-card">
+            <h2 style="text-align:center; margin-bottom:30px; letter-spacing:-1px;">Command Center</h2>
+            
+            <div id="login-ui">
+                <div class="admin-input-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="log-email" placeholder="Enter verified email">
+                </div>
+                <div class="admin-input-group">
+                    <label>Access Key</label>
+                    <input type="password" id="log-pass" placeholder="Enter password">
+                </div>
+                <button onclick="doLogin()" class="btn-main btn-primary">AUTHENTICATE</button>
+            </div>
+
+            <div id="admin-ui" style="display:none;">
+                <div class="admin-input-group"><label>Project Title</label><input type="text" id="in-title"></div>
+                <div class="admin-input-group"><label>Author/Credits</label><input type="text" id="in-creds"></div>
+                <div class="admin-input-group"><label>YouTube Link</label><input type="text" id="in-yt"></div>
+                <div class="admin-input-group"><label>Detailed Description</label><textarea id="in-desc" rows="4"></textarea></div>
+                <div class="admin-input-group"><label>World Code</label><textarea id="in-w" rows="2" style="font-family:monospace;"></textarea></div>
+                <div class="admin-input-group"><label>Code Block Code</label><textarea id="in-s" rows="4" style="font-family:monospace;"></textarea></div>
+                <div class="admin-input-group"><label>Thumb URL</label><input type="text" id="in-img"></div>
+                <button onclick="doPublish()" class="btn-main btn-accent">DEPLOY TO VAULT</button>
+                <button onclick="doLogout()" style="width:100%; background:none; border:none; color:var(--text-dim); margin-top:20px; cursor:pointer; font-size:0.8rem; font-weight:800;">TERMINATE SESSION</button>
+            </div>
+        </div>
+    </div>
 <script src="script.js"></script>
 </body>
 </html>
