@@ -1,120 +1,13 @@
-
-const firebaseConfig = {
-    apiKey: "AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",
-    authDomain: "codevault-c7cdf.firebaseapp.com",
-    projectId: "codevault-c7cdf",
-    storageBucket: "codevault-c7cdf.firebasestorage.app",
-    messagingSenderId: "315423955057",
-    appId: "1:315423955057:web:b005a9bf0564caaefa23d0"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-
-// --- AUTH LOGIC ---
-async function loginAdmin() {
-    const email = document.getElementById('admin-email').value;
-    const password = document.getElementById('admin-password').value;
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-    } catch (e) {
-        const err = document.getElementById('auth-error');
-        err.innerText = "Error: " + e.message;
-        err.style.display = 'block';
-    }
-}
-
-function logoutAdmin() { auth.signOut(); }
-
-auth.onAuthStateChanged((user) => {
-    document.getElementById('login-section').style.display = user ? 'none' : 'block';
-    document.getElementById('admin-fields').style.display = user ? 'block' : 'none';
-    document.getElementById('auth-status').style.background = user ? 'var(--accent)' : 'var(--danger)';
-    fetchVault(); 
-});
-
-// --- NAVIGATION ---
-function navigate(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-links button, .sidebar button').forEach(b => b.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-    if(document.getElementById('nav-'+pageId)) document.getElementById('nav-'+pageId).classList.add('active');
-    if(pageId === 'vault') fetchVault();
-    window.scrollTo(0,0);
-}
-
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-    document.querySelector('.sidebar-overlay').classList.toggle('active');
-}
-
-// --- DATABASE ---
-async function publishCode() {
-    const title = document.getElementById('titleInput').value.trim();
-    const desc = document.getElementById('descInput').value.trim();
-    const code = document.getElementById('codeInput').value.trim();
-    const img = document.getElementById('imageUrl').value.trim();
-
-    if(!title || !desc || !code) return alert("Fill all fields!");
-
-    try {
-        await db.collection("codes").add({
-            title, desc, code,
-            img: img || "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert("DEPLOYED!");
-        navigate('vault');
-    } catch (e) { alert("Error: " + e.message); }
-}
-
-function fetchVault() {
-    const container = document.getElementById('projectList');
-    db.collection("codes").orderBy("createdAt", "desc").get().then((snapshot) => {
-        document.getElementById('loading-msg').style.display = 'none';
-        container.innerHTML = snapshot.docs.map(doc => {
-            const data = doc.data();
-            const delBtn = auth.currentUser ? `<button onclick="deleteCode('${doc.id}', event)" style="background:var(--danger); color:white; border:none; padding:8px 12px; border-radius:8px; font-weight:700; cursor:pointer; margin-left:10px;">DELETE</button>` : '';
-            return `
-                <div class="banner" onclick="viewCode('${doc.id}')">
-                    <img src="${data.img}" class="banner-img">
-                    <div class="banner-overlay">
-                        <div>
-                            <h2 style="font-size:1.4rem;">${data.title}</h2>
-                            <p style="color:var(--text-dim); font-size:0.85rem;">${data.desc}</p>
-                        </div>
-                        <div style="display:flex; align-items:center;">
-                            <button style="background:var(--primary); color:white; border:none; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer;">GET CODE</button>
-                            ${delBtn}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    });
-}
-
-async function deleteCode(id, event) {
-    event.stopPropagation();
-    if(confirm("Delete this code?")) {
-        await db.collection("codes").doc(id).delete();
-        fetchVault();
-    }
-}
-
-async function viewCode(id) {
-    const doc = await db.collection("codes").doc(id).get();
-    if(doc.exists) {
-        document.getElementById('viewer-title').innerText = doc.data().title;
-        document.getElementById('code-display').innerText = doc.data().code;
-        navigate('viewer');
-    }
-}
-
-function copyCode() {
-    const text = document.getElementById('code-display').innerText;
-    navigator.clipboard.writeText(text).then(() => alert("COPIED"));
-}
-
-window.onload = () => navigate('home');
+const firebaseConfig={apiKey:"AIzaSyAXytuEOoK_aGOlDSnVVsQsRFppCYdHTAc",authDomain:"codevault-c7cdf.firebaseapp.com",projectId:"codevault-c7cdf",storageBucket:"codevault-c7cdf.firebasestorage.app",messagingSenderId:"315423955057",appId:"1:315423955057:web:b005a9bf0564caaefa23d0"};firebase.initializeApp(firebaseConfig);const db=firebase.firestore();const auth=firebase.auth();const D_IMG="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0MPGvpZfxl_iwXdL9197fLSVMBzm-7PLtw&s";function navigate(pageId){document.getElementById('sidebar').classList.remove('active');document.querySelector('.sidebar-overlay').classList.remove('active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-links button, .sidebar button').forEach(b=>b.classList.remove('active'));document.getElementById(pageId).classList.add('active');const navBtn=document.getElementById('nav-'+pageId);const sideBtn=document.getElementById('side-'+pageId);if(navBtn)navBtn.classList.add('active');if(sideBtn)sideBtn.classList.add('active');if(pageId==='vault')fetchV();window.scrollTo(0,0);}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('active');document.querySelector('.sidebar-overlay').classList.toggle('active');}
+function showTab(id){document.querySelectorAll('.tab-pane').forEach(p=>p.style.display='none');document.querySelectorAll('.tab-link').forEach(l=>l.classList.remove('active'));document.getElementById(id).style.display='block';event.target.classList.add('active');}
+async function doLogin(){try{await auth.signInWithEmailAndPassword(document.getElementById('log-email').value,document.getElementById('log-pass').value);}
+catch(e){alert(e.message);}}
+function doLogout(){auth.signOut();}
+auth.onAuthStateChanged(user=>{document.getElementById('login-ui').style.display=user?'none':'block';document.getElementById('admin-ui').style.display=user?'block':'none';fetchV();});async function doPublish(){const d={title:document.getElementById('in-title').value,creds:document.getElementById('in-creds').value,yt:document.getElementById('in-yt').value,desc:document.getElementById('in-desc').value,w:document.getElementById('in-w').value,s:document.getElementById('in-s').value,img:document.getElementById('in-img').value||D_IMG,createdAt:firebase.firestore.FieldValue.serverTimestamp()};await db.collection("codes").add(d);alert("SUCCESS");navigate('vault');}
+function fetchV(){db.collection("codes").orderBy("createdAt","desc").get().then(snap=>{document.getElementById('projectList').innerHTML=snap.docs.map(doc=>{const data=doc.data();const del=auth.currentUser?`<button onclick="doDel('${doc.id}', event)"style="color:var(--danger); background:none; border:none; cursor:pointer; font-weight:800; margin-left:15px;">DELETE</button>`:'';return`<div class="vault-card"onclick="viewDoc('${doc.id}')"><img src="${data.img}"class="card-img"><div class="card-body"><h3 style="font-size:1.2rem;">${data.title}</h3><p class="card-desc-snippet">${data.desc}</p><div style="margin-top:15px; display:flex; align-items:center;"><span style="font-size:0.7rem; color:var(--primary); font-weight:800;">${data.creds||'SHADOW_P45'}</span>${del}</div></div></div>`;}).join('');});}
+async function doDel(id,e){e.stopPropagation();if(confirm("Delete?")){await db.collection("codes").doc(id).delete();fetchV();}}
+async function viewDoc(id){const doc=await db.collection("codes").doc(id).get();const d=doc.data();document.getElementById('v-title').innerText=d.title;document.getElementById('v-credits').innerText="By "+(d.creds||"Shadow Programmer");document.getElementById('v-desc').innerText=d.desc;document.getElementById('v-img').src=d.img;if(d.yt){let vid=d.yt.includes('v=')?d.yt.split('v=')[1].split('&')[0]:d.yt.split('/').pop();document.getElementById('v-yt').src=`https:document.getElementById('v-yt-wrap').style.display='block';}else{document.getElementById('v-yt-wrap').style.display='none';}
+document.getElementById('v-w-area').style.display=d.w?'block':'none';document.getElementById('v-w-code').innerText=d.w||'';document.getElementById('v-s-area').style.display=d.s?'block':'none';document.getElementById('v-s-code').innerText=d.s||'';navigate('viewer');}
+function copyFull(){const c=`navigator.clipboard.writeText(c).then(()=>alert("COPIED"));}
+window.onload=()=>navigate('home');
