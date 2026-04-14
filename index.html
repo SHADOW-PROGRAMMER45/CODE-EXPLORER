@@ -303,7 +303,10 @@
             document.getElementById('admin-ui').style.display = user ? 'block' : 'none';
             fetchV();
         });
-
+        function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.querySelector('.sidebar-overlay').classList.toggle('active');
+}
         async function doPublish() {
             const d = {
                 title: document.getElementById('in-title').value,
