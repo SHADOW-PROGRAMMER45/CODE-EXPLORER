@@ -97,7 +97,7 @@ async function viewDoc(id) {
     const doc = await db.collection("codes").doc(id).get();
     const d = doc.data();
     document.getElementById('v-title').innerText = d.title;
-    document.getElementById('v-credits').innerText = "By " + (d.creds || "Shadow Programmer");
+    document.getElementById('v-credits').innerText = "By " + (d.creds || "SHADOW_PROGRAMMER45");
     document.getElementById('v-desc').innerText = d.desc;
     document.getElementById('v-img').src = d.img;
     
